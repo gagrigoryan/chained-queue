@@ -9,6 +9,8 @@ public:
 
     void addNode(int value);
 
+    void addSon(TwoThreeNode &node);
+
 private:
     TwoThreeNode *root;
 };

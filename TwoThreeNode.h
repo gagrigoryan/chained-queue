@@ -5,9 +5,9 @@ using namespace std;
 
 class TwoThreeNode {
 public:
-    TwoThreeNode();
-    TwoThreeNode(int label);
-    TwoThreeNode(int firstData, int secondData);
+    TwoThreeNode(TwoThreeNode *parent);
+    TwoThreeNode(int label, TwoThreeNode *parent);
+    TwoThreeNode(int firstData, int secondData, TwoThreeNode *parent);
 
     int getFirstData() const;
     int getSecondData() const;
@@ -17,24 +17,31 @@ public:
     void setFirstData(int value);
     void setSecondData(int value);
     void setLabel(int value);
+    void setParent(TwoThreeNode *parent);
 
     TwoThreeNode* getFirstChild() const;
     TwoThreeNode* getSecondChild() const;
     TwoThreeNode* getThirdChild() const;
+    TwoThreeNode* getParent() const;
 
     TwoThreeNode* getNthChild(int i);
+    void removeLastChild();
 
     void addChild(TwoThreeNode *child);
 
     bool isSheet();
 
-    TwoThreeNode *first, *second, *three;
+    TwoThreeNode *first, *second, *three, *fakeChild;
+    TwoThreeNode *parent;
+
+    TwoThreeNode* operator[](const int index) const;
 
 private:
     int firstData, secondData;
     int size;
     int label;
 
+    void normalize();
 };
 
 ostream & operator << (ostream & stream, const TwoThreeNode &node);

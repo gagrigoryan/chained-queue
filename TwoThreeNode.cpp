@@ -1,6 +1,6 @@
 #include "TwoThreeNode.h"
 
-TwoThreeNode::TwoThreeNode() {
+TwoThreeNode::TwoThreeNode(TwoThreeNode *parent) {
     this->firstData = -1;
     this->secondData = -1;
     this->size = 0;
@@ -8,9 +8,11 @@ TwoThreeNode::TwoThreeNode() {
     this->first = nullptr;
     this->second = nullptr;
     this->three = nullptr;
+
+    this->parent = parent;
 }
 
-TwoThreeNode::TwoThreeNode(int label) {
+TwoThreeNode::TwoThreeNode(int label, TwoThreeNode *parent) {
     this->firstData = -1;
     this->secondData = -1;
     this->size = 0;
@@ -18,9 +20,10 @@ TwoThreeNode::TwoThreeNode(int label) {
     this->first = nullptr;
     this->second = nullptr;
     this->three = nullptr;
+    this->parent = parent;
 }
 
-TwoThreeNode::TwoThreeNode(int firstData, int secondData) {
+TwoThreeNode::TwoThreeNode(int firstData, int secondData, TwoThreeNode *parent) {
     this->firstData = firstData;
     this->secondData = secondData;
     this->size = 0;
@@ -28,6 +31,7 @@ TwoThreeNode::TwoThreeNode(int firstData, int secondData) {
     this->first = nullptr;
     this->second = nullptr;
     this->three = nullptr;
+    this->parent = parent;
 }
 
 int TwoThreeNode::getFirstData() const {
@@ -61,7 +65,11 @@ void TwoThreeNode::addChild(TwoThreeNode *child) {
         this->second = child;
     else if (this->size == 2)
         this->three = child;
+    else if (this->size ==3)
+        this->fakeChild = child;
     this->size++;
+    child->setParent(this);
+    this->normalize();
 }
 
 void TwoThreeNode::setFirstData(int value) {
@@ -94,11 +102,52 @@ TwoThreeNode *TwoThreeNode::getNthChild(int i) {
         return this->getThirdChild();
 }
 
+TwoThreeNode* TwoThreeNode::operator[](const int index) const {
+    if (index >= this->size) throw out_of_range("Index out of range");
+
+    if (index == 0) return this->first;
+    if (index == 1) return this->second;
+    if (index == 2) return this->three;
+    if (index == 3) return this->fakeChild;
+}
+
+void TwoThreeNode::normalize() {
+    if (this->size < 2) return;
+    if (this->first < this->second) swap(this->first, this->second);
+    if (this->size == 3 && this->first < this->three) swap(this->first, this->three);
+    if (this->size == 3 && this->second < this->three) swap(this->second, this->three);
+    if (this->size == 4 && this->second < this->fakeChild) swap(this->second, this->fakeChild);
+    if (this->size == 4 && this->three < this->fakeChild) swap(this->three, this->fakeChild);
+}
+
+TwoThreeNode *TwoThreeNode::getParent() const {
+    return this->parent;
+}
+
+void TwoThreeNode::setParent(TwoThreeNode *parent) {
+    this->parent = parent;
+}
+
+void TwoThreeNode::removeLastChild() {
+    if (this->size == 0) return;
+    if (this->size == 1) this->first = nullptr;
+    if (this->size == 2) this->second = nullptr;
+    if (this->size == 3) this->three = nullptr;
+    if (this->size == 4) this->fakeChild = nullptr;
+    this->size--;
+}
+
 ostream & operator << (ostream & stream, const TwoThreeNode &node) {
     if (node.getSize() == 0)
         stream << "Sheet: " << node.getLabel();
     else
         stream << "[ " << node.getFirstData() << ", " << node.getSecondData() << " ]";
     return stream;
+}
+
+void swap (int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
