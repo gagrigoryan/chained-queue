@@ -43,17 +43,15 @@ int main() {
 
     TwoThreeNode searchResult = tree.search(12, root);
 
-    TwoThreeNode node = TwoThreeNode(nullptr);
-    node.addChild(&sheet8);
-    node.addChild(&sheet6);
-    node.addChild(&sheet1);
-    node.addChild(&sheet3);
+    a.addChildToRight(b, sheet8);
+    a.addChildToRight(c, sheet3);
 
-    tree.addSon(node);
+    TwoThreeNode child1 = *a[0];
+    TwoThreeNode child2 = *a[1];
+    TwoThreeNode child3 = *a[2];
+    TwoThreeNode child4 = *a[3];
 
-    TwoThreeNode eq1 = TwoThreeNode(10, nullptr);
-    TwoThreeNode eq2 = TwoThreeNode(10, nullptr);
-    cout << (eq1 == eq2);
+    cout << child1 << endl << child2 << endl << child3 << endl << child4;
 
     return 0;
 }

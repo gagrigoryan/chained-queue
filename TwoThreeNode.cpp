@@ -142,6 +142,55 @@ bool TwoThreeNode::operator==(TwoThreeNode &otherNode) {
     return this->getFirstData() == otherNode.getFirstData() && this->getSecondData() == otherNode.secondData;
 }
 
+void TwoThreeNode::addChildToRight(TwoThreeNode &sourceChild, TwoThreeNode &newChild) {
+    bool isFindPos = false;
+    TwoThreeNode* childArray [4];
+    for (int i = 0; i < this->size; ++i) {
+        TwoThreeNode* node = this->getNthChild(i + 1);
+        if (!isFindPos) {
+            childArray[i] = node;
+        } else {
+            childArray[i + 1] = node;
+        }
+        if (*node == sourceChild) {
+            isFindPos = true;
+            childArray[i + 1] = &newChild;
+        }
+    }
+
+    for (int i = 0; i <= this->getSize(); ++i) {
+        this->setNthChild(i + 1, *childArray[i]);
+    }
+    this->size++;
+}
+
+void TwoThreeNode::setFirstChild(TwoThreeNode *child) {
+    this->first = child;
+}
+
+void TwoThreeNode::setSecondChild(TwoThreeNode *child) {
+    this->second = child;
+}
+
+void TwoThreeNode::setThreeChild(TwoThreeNode *child) {
+    this->three = child;
+}
+
+void TwoThreeNode::setFakeChild(TwoThreeNode *child) {
+    this->fakeChild = child;
+}
+
+void TwoThreeNode::setNthChild(int index, TwoThreeNode &child) {
+    if (index == 1)
+        this->setFirstChild(&child);
+    else if (index == 2)
+        this->setSecondChild(&child);
+    else if (index == 3)
+        this->setThreeChild(&child);
+    else
+        this->setFakeChild(&child);
+}
+
 ostream & operator << (ostream & stream, const TwoThreeNode &node) {
     if (node.getSize() == 0)
         stream << "Sheet: " << node.getLabel();

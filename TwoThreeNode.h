@@ -24,10 +24,18 @@ public:
     TwoThreeNode* getThirdChild() const;
     TwoThreeNode* getParent() const;
 
+    void setFirstChild(TwoThreeNode *child);
+    void setSecondChild(TwoThreeNode *child);
+    void setThreeChild(TwoThreeNode *child);
+    void setFakeChild(TwoThreeNode *child);
+
+    void setNthChild(int index, TwoThreeNode &child);
+
     TwoThreeNode* getNthChild(int i);
     void removeLastChild();
 
     void addChild(TwoThreeNode *child);
+    void addChildToRight(TwoThreeNode &sourceChild, TwoThreeNode &newChild);
 
     bool isSheet();
 
