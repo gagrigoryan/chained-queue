@@ -24,6 +24,10 @@ void TwoThreeTree::addNode(int value) {
             TwoThreeNode f = this->search(value, *this->root);
             TwoThreeNode newNode = TwoThreeNode(value, &f);
             if (f.getSize() == 2) f.addChild(&newNode);
+            if (f.getSize() == 3) {
+                f.addChild(&newNode);
+                this->addSon(f);
+            }
         }
     }
 }
@@ -58,10 +62,10 @@ TwoThreeNode TwoThreeTree::search(int value, TwoThreeNode &root) {
 
 void TwoThreeTree::addSon(TwoThreeNode &node) {
     TwoThreeNode v_ = TwoThreeNode(102, 31,nullptr);
-    TwoThreeNode threeChild = *node[2];
-    TwoThreeNode fourChild = *node[3];
-    v_.addChild(&threeChild);
-    v_.addChild(&fourChild);
+    TwoThreeNode* threeChild = node[2];
+    TwoThreeNode* fourChild = node[3];
+    v_.addChild(threeChild);
+    v_.addChild(fourChild);
     node.removeLastChild();
     node.removeLastChild();
 
@@ -70,6 +74,12 @@ void TwoThreeTree::addSon(TwoThreeNode &node) {
         newRoot.addChild(&node);
         newRoot.addChild(&v_);
         this->root = &newRoot;
+    } else {
+        TwoThreeNode* f = node.parent;
+        f->addChildToRight(node, v_);
+
+        if (f->getSize() == 4)
+            this->addSon(*f);
     }
 }
 

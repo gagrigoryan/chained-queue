@@ -166,18 +166,22 @@ void TwoThreeNode::addChildToRight(TwoThreeNode &sourceChild, TwoThreeNode &newC
 
 void TwoThreeNode::setFirstChild(TwoThreeNode *child) {
     this->first = child;
+    child->setParent(this);
 }
 
 void TwoThreeNode::setSecondChild(TwoThreeNode *child) {
     this->second = child;
+    child->setParent(this);
 }
 
 void TwoThreeNode::setThreeChild(TwoThreeNode *child) {
     this->three = child;
+    child->setParent(this);
 }
 
 void TwoThreeNode::setFakeChild(TwoThreeNode *child) {
     this->fakeChild = child;
+    child->setParent(this);
 }
 
 void TwoThreeNode::setNthChild(int index, TwoThreeNode &child) {
