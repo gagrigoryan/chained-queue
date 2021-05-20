@@ -35,6 +35,7 @@ public:
     TwoThreeNode *parent;
 
     TwoThreeNode* operator[](const int index) const;
+    bool operator==(TwoThreeNode &otherNode);
 
 private:
     int firstData, secondData;

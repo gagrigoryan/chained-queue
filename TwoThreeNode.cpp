@@ -137,6 +137,11 @@ void TwoThreeNode::removeLastChild() {
     this->size--;
 }
 
+bool TwoThreeNode::operator==(TwoThreeNode &otherNode) {
+    if (this->isSheet() && otherNode.isSheet() && this->getLabel() == otherNode.getLabel()) return true;
+    return this->getFirstData() == otherNode.getFirstData() && this->getSecondData() == otherNode.secondData;
+}
+
 ostream & operator << (ostream & stream, const TwoThreeNode &node) {
     if (node.getSize() == 0)
         stream << "Sheet: " << node.getLabel();

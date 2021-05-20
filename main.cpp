@@ -51,6 +51,9 @@ int main() {
 
     tree.addSon(node);
 
+    TwoThreeNode eq1 = TwoThreeNode(10, nullptr);
+    TwoThreeNode eq2 = TwoThreeNode(10, nullptr);
+    cout << (eq1 == eq2);
 
     return 0;
 }
