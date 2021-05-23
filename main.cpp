@@ -41,40 +41,40 @@ int main() {
 //
 //    TwoThreeTree tree = TwoThreeTree(root);
 
-    TwoThreeNode a = TwoThreeNode(7, 12, nullptr);
+    TwoThreeNode a = TwoThreeNode(3, 7, nullptr);
     TwoThreeNode b = TwoThreeNode(1, 3, &a);
-    TwoThreeNode c = TwoThreeNode(8, 10, &a);
+    TwoThreeNode c = TwoThreeNode(4, 6, &a);
+    TwoThreeNode d = TwoThreeNode(10, 12, &a);
 
     TwoThreeNode sheet1 = TwoThreeNode(1, &b);
     TwoThreeNode sheet2 = TwoThreeNode(3, &b);
-    TwoThreeNode sheet3 = TwoThreeNode(5, &b);
-    TwoThreeNode sheet4 = TwoThreeNode(9, &b);
-    TwoThreeNode sheet5 = TwoThreeNode(10, &b);
-    TwoThreeNode sheet6 = TwoThreeNode(12, &b);
-
-    TwoThreeNode newSon = TwoThreeNode(8, &b);
-
+    TwoThreeNode sheet3 = TwoThreeNode(4, &b);
+    TwoThreeNode sheet4 = TwoThreeNode(6, &b);
+    TwoThreeNode sheet5 = TwoThreeNode(7, &b);
+    TwoThreeNode sheet6 = TwoThreeNode(10, &b);
+    TwoThreeNode sheet7 = TwoThreeNode(12, &b);
 
     b.addChild(&sheet1);
     b.addChild(&sheet2);
-    b.addChild(&sheet3);
-    b.addChild(&newSon);
 
+    c.addChild(&sheet3);
     c.addChild(&sheet4);
     c.addChild(&sheet5);
-    c.addChild(&sheet6);
+
+    d.addChild(&sheet6);
+    d.addChild(&sheet7);
 
     a.addChild(&b);
     a.addChild(&c);
-
+    a.addChild(&d);
 
     TwoThreeTree tree = TwoThreeTree(a);
 
-    tree.addSon(b);
+    tree.addNode(5);
 
-    TwoThreeNode secondChild = *a[1];
-
-    cout << *secondChild[1];
+    TwoThreeNode* root = &tree.getRoot();
+    TwoThreeNode firstSon = *root->getFirstChild();
+    cout << *firstSon[1]->getFirstChild() << endl;
 
     return 0;
 }

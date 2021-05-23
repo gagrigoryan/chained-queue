@@ -113,11 +113,11 @@ TwoThreeNode* TwoThreeNode::operator[](const int index) const {
 
 void TwoThreeNode::normalize() {
     if (this->size < 2) return;
-    if (this->first < this->second) swap(this->first, this->second);
-    if (this->size == 3 && this->first < this->three) swap(this->first, this->three);
-    if (this->size == 3 && this->second < this->three) swap(this->second, this->three);
-    if (this->size == 4 && this->second < this->fakeChild) swap(this->second, this->fakeChild);
-    if (this->size == 4 && this->three < this->fakeChild) swap(this->three, this->fakeChild);
+    if (this->first->getLabel() > this->second->getLabel()) swap(this->first, this->second);
+    if (this->size >= 3 && this->first->getLabel() > this->three->getLabel()) swap(this->first, this->three);
+    if (this->size >= 3 && this->second->getLabel() > this->three->getLabel()) swap(this->second, this->three);
+    if (this->size == 4 && this->second->getLabel() > this->fakeChild->getLabel()) swap(this->second, this->fakeChild);
+    if (this->size == 4 && this->three->getLabel() > this->fakeChild->getLabel()) swap(this->three, this->fakeChild);
 }
 
 TwoThreeNode *TwoThreeNode::getParent() const {
