@@ -11,6 +11,14 @@ public:
 
     void addSon(TwoThreeNode *node);
 
+    void adjustmentRecursive(TwoThreeNode *node);
+
+    void adjustment();
+
+    void print(TwoThreeNode *node, int deep);
+
+    void spaces(int deep);
+
 private:
     TwoThreeNode *root;
 };

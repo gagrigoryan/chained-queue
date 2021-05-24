@@ -71,10 +71,9 @@ int main() {
     TwoThreeTree tree = TwoThreeTree(a);
 
     tree.addNode(5);
+    tree.adjustment();
 
-    TwoThreeNode* root = &tree.getRoot();
-    TwoThreeNode firstSon = *root->getFirstChild();
-    cout << *firstSon[1]->getFirstChild() << endl;
+    tree.print(&tree.getRoot(), 0);
 
     return 0;
 }

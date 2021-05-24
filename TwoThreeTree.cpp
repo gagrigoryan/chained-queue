@@ -63,26 +63,56 @@ TwoThreeNode& TwoThreeTree::search(int value, TwoThreeNode &root) {
 }
 
 void TwoThreeTree::addSon(TwoThreeNode *node) {
-    TwoThreeNode v_ = TwoThreeNode(102, 31,nullptr);
-    TwoThreeNode threeChild = node[2];
-    TwoThreeNode fourChild = node[3];
-    v_.addChild(&threeChild);
-    v_.addChild(&fourChild);
+    TwoThreeNode* v_ = new TwoThreeNode(102, 31,nullptr);
+    TwoThreeNode* threeChild = &node->getThirdChild();
+    TwoThreeNode* fourChild = &node->getFakeChild();
+    v_->addChild(threeChild);
+    v_->addChild(fourChild);
     node->removeLastChild();
     node->removeLastChild();
 
-
-    if (node->getParent() == nullptr) {
-        TwoThreeNode newRoot = TwoThreeNode(45, 88,nullptr);
-        newRoot.addChild(node);
-        newRoot.addChild(&v_);
-        this->root = &newRoot;
+    if (!&node->getParent()) {
+        TwoThreeNode* newRoot = new TwoThreeNode(45, 88,nullptr);
+        newRoot->addChild(node);
+        newRoot->addChild(v_);
+        this->root = newRoot;
     } else {
-        TwoThreeNode f = *node->getParent();
-        f.addChildToRight(*node, v_);
+        TwoThreeNode* f = &node->getParent();
+        f->addChildToRight(*node, *v_);
 
-        if (f.getSize() == 4)
-            this->addSon(&f);
+        if (f->getSize() == 4)
+            this->addSon(f);
     }
 }
+
+void TwoThreeTree::adjustmentRecursive(TwoThreeNode *node) {
+    if (node->isSheet()) return;
+    for (int i = 0; i < node->getSize(); ++i) {
+        TwoThreeNode* child = &node->getNthChild(i + 1);
+        adjustmentRecursive(child);
+    }
+    node->correctNode();
+}
+
+void TwoThreeTree::adjustment() {
+    adjustmentRecursive(root);
+}
+
+void TwoThreeTree::print(TwoThreeNode *node, int deep) {
+    spaces(deep);
+    cout << *node << endl;
+    if (node->isSheet()) return;
+    for (int i = 0; i < node->getSize(); ++i) {
+        TwoThreeNode child = node->getNthChild(i + 1);
+        print(&child, deep + 5);
+    }
+}
+
+void TwoThreeTree::spaces(int deep) {
+    for (int i = 0; i < deep; ++i) {
+        cout << " ";
+    }
+}
+
+
 

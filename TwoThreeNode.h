@@ -19,10 +19,11 @@ public:
     void setLabel(int value);
     void setParent(TwoThreeNode *parent);
 
-    TwoThreeNode* getFirstChild() const;
-    TwoThreeNode* getSecondChild() const;
-    TwoThreeNode* getThirdChild() const;
-    TwoThreeNode* getParent() const;
+    TwoThreeNode& getFirstChild() const;
+    TwoThreeNode& getSecondChild() const;
+    TwoThreeNode& getThirdChild() const;
+    TwoThreeNode& getFakeChild() const;
+    TwoThreeNode& getParent() const;
 
     void setFirstChild(TwoThreeNode *child);
     void setSecondChild(TwoThreeNode *child);
@@ -31,7 +32,7 @@ public:
 
     void setNthChild(int index, TwoThreeNode &child);
 
-    TwoThreeNode* getNthChild(int i);
+    TwoThreeNode& getNthChild(int i);
     void removeLastChild();
 
     void addChild(TwoThreeNode *child);
@@ -44,6 +45,11 @@ public:
 
     TwoThreeNode* operator[](const int index) const;
     bool operator==(TwoThreeNode &otherNode);
+
+    void correctNode();
+    int maxInSubTree();
+
+    TwoThreeNode& operator=(const TwoThreeNode& other);
 
 private:
     int firstData, secondData;

@@ -46,16 +46,24 @@ int TwoThreeNode::getSize() const {
     return this->size;
 }
 
-TwoThreeNode* TwoThreeNode::getFirstChild() const {
-    return this->first;
+TwoThreeNode& TwoThreeNode::getFirstChild() const {
+    TwoThreeNode* child = this->first;
+    return *child;
 }
 
-TwoThreeNode* TwoThreeNode::getSecondChild() const {
-    return this->second;
+TwoThreeNode& TwoThreeNode::getSecondChild() const {
+    TwoThreeNode* child = this->second;
+    return *child;
 }
 
-TwoThreeNode* TwoThreeNode::getThirdChild() const {
-    return this->three;
+TwoThreeNode& TwoThreeNode::getThirdChild() const {
+    TwoThreeNode* child = this->three;
+    return *child;
+}
+
+TwoThreeNode& TwoThreeNode::getFakeChild() const {
+    TwoThreeNode* child = this->fakeChild;
+    return *child;
 }
 
 void TwoThreeNode::addChild(TwoThreeNode *child) {
@@ -93,9 +101,10 @@ bool TwoThreeNode::isSheet() {
     return this->size == 0 && this->label != -1;
 }
 
-TwoThreeNode *TwoThreeNode::getNthChild(int i) {
-    if (i == 1)
+TwoThreeNode& TwoThreeNode::getNthChild(int i) {
+    if (i == 1) {
         return this->getFirstChild();
+    }
     else if (i == 2)
         return this->getSecondChild();
     else if (i == 3)
@@ -120,8 +129,9 @@ void TwoThreeNode::normalize() {
     if (this->size == 4 && this->three->getLabel() > this->fakeChild->getLabel()) swap(this->three, this->fakeChild);
 }
 
-TwoThreeNode *TwoThreeNode::getParent() const {
-    return this->parent;
+TwoThreeNode& TwoThreeNode::getParent() const {
+    TwoThreeNode* parent = this->parent;
+    return *parent;
 }
 
 void TwoThreeNode::setParent(TwoThreeNode *parent) {
@@ -146,7 +156,7 @@ void TwoThreeNode::addChildToRight(TwoThreeNode &sourceChild, TwoThreeNode &newC
     bool isFindPos = false;
     TwoThreeNode* childArray [4];
     for (int i = 0; i < this->size; ++i) {
-        TwoThreeNode* node = this->getNthChild(i + 1);
+        TwoThreeNode* node = &this->getNthChild(i + 1);
         if (!isFindPos) {
             childArray[i] = node;
         } else {
@@ -193,6 +203,36 @@ void TwoThreeNode::setNthChild(int index, TwoThreeNode &child) {
         this->setThreeChild(&child);
     else
         this->setFakeChild(&child);
+}
+
+int TwoThreeNode::maxInSubTree() {
+    if (this->isSheet()) {
+        return this->label;
+    }
+    if (this->getSize() == 2) {
+        return second->maxInSubTree();
+    } else if (this->getSize() == 3) {
+        TwoThreeNode son = this->getThirdChild();
+        return three->maxInSubTree();
+    }
+}
+
+void TwoThreeNode::correctNode() {
+    TwoThreeNode& leftSon = this->getFirstChild();
+    TwoThreeNode& middleSon = this->getSecondChild();
+    this->setFirstData(leftSon.maxInSubTree());
+    this->setSecondData(middleSon.maxInSubTree());
+}
+
+TwoThreeNode &TwoThreeNode::operator=(const TwoThreeNode &other) {
+    this->first = other.first;
+    this->second = other.second;
+    this->three = other.three;
+    this->label = other.label;
+    this->size = other.size;
+    this->firstData = other.firstData;
+    this->secondData = other.secondData;
+    return *this;
 }
 
 ostream & operator << (ostream & stream, const TwoThreeNode &node) {
