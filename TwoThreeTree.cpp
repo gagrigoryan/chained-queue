@@ -30,6 +30,7 @@ void TwoThreeTree::addNode(int value) {
             }
         }
     }
+    this->adjustment();
 }
 
 TwoThreeNode& TwoThreeTree::getRoot() {

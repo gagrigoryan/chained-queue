@@ -70,8 +70,10 @@ int main() {
 
     TwoThreeTree tree = TwoThreeTree(a);
 
+    // to do sorting sheets
     tree.addNode(5);
-    tree.adjustment();
+    tree.addNode(16);
+    tree.addNode(9);
 
     tree.print(&tree.getRoot(), 0);
 
