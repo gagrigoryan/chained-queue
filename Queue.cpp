@@ -41,6 +41,7 @@ TwoThreeTree& Queue::implantation(TwoThreeTree &T1, TwoThreeTree &T2) {
         }
         if (f->getSize() == 4) {
             bigTree->addSon(f);
+            bigTree->adjustment();
         }
         bigTree->getRoot().correctNode();
         return *bigTree;
@@ -49,24 +50,31 @@ TwoThreeTree& Queue::implantation(TwoThreeTree &T1, TwoThreeTree &T2) {
 
 void Queue::separation(int a, TwoThreeTree &T, TwoThreeTree *&leftTree, TwoThreeTree *&rightTree) {
     TwoThreeNode* node = &T.search(a, T.getRoot());
+    int leftNodesWoodSize = 0;
     int leftWoodSize = 0;
     int rightWoodSize = 0;
     auto* leftWood = new TwoThreeTree[0]{};
     auto* rightWood = new TwoThreeTree[0]{};
+    auto* leftNodesWood = new TwoThreeTree[0]{};
     for (int i = 1; i <= node->getSize(); ++i) {
         TwoThreeNode* child = &node->getNthChild(i);
         int childLabel = child->getLabel();
         if (a >= childLabel) {
             TwoThreeTree* childTree = new TwoThreeTree(*child);
-            leftWood[leftWoodSize] = *childTree;
-            leftWoodSize++;
+            leftNodesWood[leftNodesWoodSize] = *childTree;
+            leftNodesWoodSize++;
         } else {
             rightWood[rightWoodSize] = TwoThreeTree(node->getNthChild(i));
             rightWoodSize++;
         }
     }
+    for (int i = leftNodesWoodSize - 1; i >= 0; --i) {
+        leftWood[leftWoodSize] = leftNodesWood[i];
+        leftWoodSize++;
+    }
     TwoThreeNode* parent = &node->getParent();
     while (parent != nullptr) {
+        leftNodesWoodSize = 0;
         bool isRight = false;
         for (int i = 1; i <= parent->getSize(); ++i) {
             if (*node == parent->getNthChild(i)) {
@@ -77,9 +85,13 @@ void Queue::separation(int a, TwoThreeTree &T, TwoThreeTree *&leftTree, TwoThree
                 rightWood[rightWoodSize] = TwoThreeTree(parent->getNthChild(i));
                 rightWoodSize++;
             } else {
-                leftWood[leftWoodSize] = TwoThreeTree(parent->getNthChild(i));
-                leftWoodSize++;
+                leftNodesWood[leftNodesWoodSize] = TwoThreeTree(parent->getNthChild(i));
+                leftNodesWoodSize++;
             }
+        }
+        for (int i = leftNodesWoodSize - 1; i >= 0; --i) {
+            leftWood[leftWoodSize] = leftNodesWood[i];
+            leftWoodSize++;
         }
         node = parent;
         parent = &parent->getParent();
@@ -88,12 +100,13 @@ void Queue::separation(int a, TwoThreeTree &T, TwoThreeTree *&leftTree, TwoThree
 //    for (int i = 0; i < leftWoodSize; ++i) {
 //        cout << leftWood[i];
 //    }
+//    cout << endl;
 //    cout << endl << "Right Wood" << endl;
 //    for (int i = 0; i < rightWoodSize; ++i) {
 //        cout << rightWood[i];
 //    }
 //    cout << endl << endl;
-    TwoThreeTree* LT =  &implantation(leftWood[1], leftWood[0]);
+    TwoThreeTree* LT =  &implantation(leftWood[0], leftWood[1]);
     TwoThreeTree* RT =  &implantation(rightWood[0], rightWood[1]);
     for (int i = 2; i < leftWoodSize; ++i) {
         LT = &implantation(leftWood[i], *LT);
@@ -103,6 +116,7 @@ void Queue::separation(int a, TwoThreeTree &T, TwoThreeTree *&leftTree, TwoThree
     }
     leftTree = LT;
     rightTree = RT;
+    delete &leftWood, &rightWood, &leftNodesWood;
 }
 
 ostream & operator << (ostream & stream, Queue queue) {
