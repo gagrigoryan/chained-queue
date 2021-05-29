@@ -7,18 +7,18 @@ TwoThreeTree::TwoThreeTree(TwoThreeNode &root) {
 
 void TwoThreeTree::addNode(int value) {
     if (this->root->isSheet()) {
-        TwoThreeNode newRoot = TwoThreeNode(nullptr);
-        TwoThreeNode newNode = TwoThreeNode(value, &newRoot);
+        TwoThreeNode* newRoot = new TwoThreeNode(nullptr);
+        TwoThreeNode* newNode = new TwoThreeNode(value, newRoot);
 
         if (this->root->getLabel() < value) {
-            newRoot.addChild(this->root);
-            this->root->setParent(&newRoot);
-            newRoot.addChild(&newNode);
+            newRoot->addChild(this->root);
+            this->root->setParent(newRoot);
+            newRoot->addChild(newNode);
         } else {
-            newRoot.addChild(&newNode);
-            newRoot.addChild(this->root);
+            newRoot->addChild(newNode);
+            newRoot->addChild(this->root);
         }
-        this->root = &newRoot;
+        this->root = newRoot;
     } else {
         if (this->root->getSize() >= 1) {
             TwoThreeNode* f = &this->search(value, *this->root);
@@ -99,20 +99,35 @@ void TwoThreeTree::adjustment() {
     adjustmentRecursive(root);
 }
 
-void TwoThreeTree::print(TwoThreeNode *node, int deep) {
-    spaces(deep);
-    cout << *node << endl;
+void TwoThreeTree::print(ostream & stream, TwoThreeNode *node, int deep) {
+    spaces(stream, deep);
+    stream << *node << endl;
     if (node->isSheet()) return;
     for (int i = 0; i < node->getSize(); ++i) {
         TwoThreeNode child = node->getNthChild(i + 1);
-        print(&child, deep + 5);
+        print(stream, &child, deep + 5);
     }
 }
 
-void TwoThreeTree::spaces(int deep) {
+void TwoThreeTree::spaces(ostream & stream, int deep) {
     for (int i = 0; i < deep; ++i) {
-        cout << " ";
+        stream << " ";
     }
+}
+
+int TwoThreeTree::height() {
+    int h = 0;
+    TwoThreeNode* node = root;
+    while (!node->isSheet()) {
+        h++;
+        node = &node->getFirstChild();
+    }
+    return h;
+}
+
+ostream & operator << (ostream & stream, TwoThreeTree tree) {
+    tree.print(stream, &tree.getRoot(), 0);
+    return stream;
 }
 
 

@@ -1,3 +1,7 @@
+#include <fstream>
+
+using namespace std;
+
 class TwoThreeNode;
 
 class TwoThreeTree {
@@ -15,10 +19,14 @@ public:
 
     void adjustment();
 
-    void print(TwoThreeNode *node, int deep);
+    void print(ostream & stream, TwoThreeNode *node, int deep);
 
-    void spaces(int deep);
+    void spaces(ostream & stream, int deep);
+
+    int height ();
 
 private:
     TwoThreeNode *root;
 };
+
+ostream & operator << (ostream & stream, TwoThreeTree tree);

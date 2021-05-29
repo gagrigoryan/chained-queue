@@ -49,6 +49,8 @@ public:
     void correctNode();
     int maxInSubTree();
 
+    void swapNodes(TwoThreeNode &child1, TwoThreeNode &child2);
+
     TwoThreeNode& operator=(const TwoThreeNode& other);
 
 private:

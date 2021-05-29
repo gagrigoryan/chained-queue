@@ -148,8 +148,11 @@ void TwoThreeNode::removeLastChild() {
 }
 
 bool TwoThreeNode::operator==(TwoThreeNode &otherNode) {
-    if (this->isSheet() && otherNode.isSheet() && this->getLabel() == otherNode.getLabel()) return true;
-    return this->getFirstData() == otherNode.getFirstData() && this->getSecondData() == otherNode.secondData;
+    if (this->isSheet()) {
+        return otherNode.isSheet() && this->getLabel() == otherNode.getLabel();
+    } else {
+        return this->getFirstData() == otherNode.getFirstData() && this->getSecondData() == otherNode.secondData;
+    }
 }
 
 void TwoThreeNode::addChildToRight(TwoThreeNode &sourceChild, TwoThreeNode &newChild) {
@@ -162,6 +165,7 @@ void TwoThreeNode::addChildToRight(TwoThreeNode &sourceChild, TwoThreeNode &newC
         } else {
             childArray[i + 1] = node;
         }
+
         if (*node == sourceChild) {
             isFindPos = true;
             childArray[i + 1] = &newChild;
@@ -172,6 +176,7 @@ void TwoThreeNode::addChildToRight(TwoThreeNode &sourceChild, TwoThreeNode &newC
         this->setNthChild(i + 1, *childArray[i]);
     }
     this->size++;
+    this->normalize();
 }
 
 void TwoThreeNode::setFirstChild(TwoThreeNode *child) {
@@ -233,6 +238,17 @@ TwoThreeNode &TwoThreeNode::operator=(const TwoThreeNode &other) {
     this->firstData = other.firstData;
     this->secondData = other.secondData;
     return *this;
+}
+
+void TwoThreeNode::swapNodes(TwoThreeNode &child1, TwoThreeNode &child2) {
+    for (int i = 0; i < this->size; ++i) {
+        TwoThreeNode* node = &this->getNthChild(i + 1);
+        if (*node == child1) {
+            this->setNthChild(i + 1, child2);
+        } else if (*node == child2) {
+            this->setNthChild(i + 1, child1);
+        }
+    }
 }
 
 ostream & operator << (ostream & stream, const TwoThreeNode &node) {
