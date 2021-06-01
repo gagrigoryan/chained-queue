@@ -2,9 +2,7 @@
 #include "TwoThreeTree.h"
 #include "TwoThreeNode.h"
 
-Queue::Queue(TwoThreeTree &tree1) : tree(tree1){}
-
-TwoThreeTree& Queue::implantation(TwoThreeTree &T1, TwoThreeTree &T2) {
+TwoThreeTree& implantation(TwoThreeTree &T1, TwoThreeTree &T2) {
     if (T1.height() == T2.height()) {
         TwoThreeNode* root1 = &T1.getRoot();
         TwoThreeNode* root2 = &T2.getRoot();
@@ -48,7 +46,7 @@ TwoThreeTree& Queue::implantation(TwoThreeTree &T1, TwoThreeTree &T2) {
     }
 }
 
-void Queue::separation(int a, TwoThreeTree &T, TwoThreeTree *&leftTree, TwoThreeTree *&rightTree) {
+void separation(int a, TwoThreeTree &T, TwoThreeTree *&leftTree, TwoThreeTree *&rightTree) {
     TwoThreeNode* node = &T.search(a, T.getRoot());
     int leftNodesWoodSize = 0;
     int leftWoodSize = 0;
@@ -106,21 +104,14 @@ void Queue::separation(int a, TwoThreeTree &T, TwoThreeTree *&leftTree, TwoThree
 //        cout << rightWood[i];
 //    }
 //    cout << endl << endl;
-    TwoThreeTree* LT =  &implantation(leftWood[0], leftWood[1]);
-    TwoThreeTree* RT =  &implantation(rightWood[0], rightWood[1]);
+    leftTree =  &implantation(leftWood[1], leftWood[0]);
+    rightTree =  &implantation(rightWood[0], rightWood[1]);
+//    cout << "-----------" << endl << *LT << endl;
     for (int i = 2; i < leftWoodSize; ++i) {
-        LT = &implantation(leftWood[i], *LT);
+        leftTree = &implantation(leftWood[i], *leftTree);
     }
     for (int i = 2; i < rightWoodSize; ++i) {
-        RT = &implantation(*RT, rightWood[i]);
+        rightTree = &implantation(*rightTree, rightWood[i]);
     }
-    leftTree = LT;
-    rightTree = RT;
     delete &leftWood, &rightWood, &leftNodesWood;
 }
-
-ostream & operator << (ostream & stream, Queue queue) {
-    stream << queue.tree;
-    return stream;
-}
-

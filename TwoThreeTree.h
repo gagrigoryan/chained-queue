@@ -17,6 +17,8 @@ public:
 
     void adjustmentRecursive(TwoThreeNode *node);
 
+    void adjustmentEffective(TwoThreeNode *node);
+
     void adjustment();
 
     void print(ostream & stream, TwoThreeNode *node, int deep);

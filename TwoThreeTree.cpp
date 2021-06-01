@@ -125,6 +125,16 @@ int TwoThreeTree::height() {
     return h;
 }
 
+void TwoThreeTree::adjustmentEffective(TwoThreeNode *node) {
+    TwoThreeNode* parent = &node->getParent();
+    node->correctNode();
+    while (parent != nullptr) {
+        parent->correctNode();
+        parent = &parent->getParent();
+    }
+    delete parent;
+}
+
 ostream & operator << (ostream & stream, TwoThreeTree tree) {
     tree.print(stream, &tree.getRoot(), 0);
     return stream;
